@@ -1,0 +1,23 @@
+bundle: kubernetes
+name: star-tracker
+description: Star Tracker application bundle with server, database, and load balancer
+applications:
+  star-tracker-server:
+    charm: star-tracker-server
+    scale: 1
+    trust: true
+  postgresql:
+    charm: postgresql
+    channel: stable
+    scale: 1
+    constraints: arch=amd64
+  haproxy:
+    charm: haproxy
+    channel: stable
+    scale: 1
+    expose: true
+relations:
+  - - star-tracker-server:db
+    - postgresql:db
+  - - haproxy:reverseproxy
+    - star-tracker-server:website

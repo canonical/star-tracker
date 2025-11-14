@@ -1,0 +1,27 @@
+name: star-tracker-server
+base: core24
+version: 0.1.0
+summary: star-tracker server for tracking the replication of open source projects
+description: |
+  A service that tracks the replication of open source software.
+  Supports registration of projects and searching for registered projects.
+
+grade: devel
+confinement: strict
+
+apps:
+  star-tracker-server:
+    command: bin/star-tracker-server
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+
+parts:
+  star-tracker-server:
+    plugin: go
+    source: .
+    build-snaps:
+      - go/latest/stable
+    override-build: |
+      go build -o $SNAPCRAFT_PART_INSTALL/bin/star-tracker-server cmd/server/*.go
